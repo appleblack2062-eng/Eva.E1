@@ -799,4 +799,4 @@ class AgentBrain:
         await self._optimization_queue.join()  # Wait for pending optimizations
         await self.task_memory.flush()
         await self.workflow_memory.flush()
-        await self.feedback_memory.flush()q
+        await self.feedback_memory.flush()
