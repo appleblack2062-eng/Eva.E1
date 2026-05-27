@@ -1,4 +1,7 @@
-"""Main orchestrator for self-optimizing agentic memory."""
+"""Main orchestrator for self-optimizing agentic memory.
+
+Now includes Multi-Agent Orchestrator with Spatial Awareness (v2.0).
+"""
 
 from __future__ import annotations
 import asyncio
@@ -33,6 +36,11 @@ from ..learning.strategy_learner import StrategyLearner
 from ..tools.registry import ToolRegistry
 from ..tools.sandbox import SafeExecutionSandbox
 from ..utils.safety import ResourceMonitor, TimeoutGuard
+
+# NexusAgent Pro v2.0: Multi-Agent Orchestrator imports
+from ..workspace.filesystem_graph import FileSystemGraph
+from ..agents.manager_instance import ManagerInstance
+from ..api.workspace_api import WorkspaceAPI
 
 T = TypeVar('T')
 
@@ -135,6 +143,19 @@ class AgentBrain:
         self.workflow_refiner = WorkflowRefiner(config, self.optimizer)
         self.strategy_learner = StrategyLearner(config)
         
+        # NexusAgent Pro v2.0: Multi-Agent Orchestrator
+        workspace_path = Path(config.base_storage_path) / agent_id / "workspace"
+        workspace_path.mkdir(parents=True, exist_ok=True)
+        self.fs_graph = FileSystemGraph(str(workspace_path))
+        self.workspace_api = WorkspaceAPI(self.fs_graph)
+        
+        self.manager = ManagerInstance(
+            agent_id=f"{agent_id}_manager",
+            llm_client=llm_client,
+            fs_graph=self.fs_graph,
+            config=config
+        )
+        
         # Runtime state
         self._task_counter = 0
         self._optimization_queue: asyncio.Queue = asyncio.Queue()
@@ -159,6 +180,24 @@ class AgentBrain:
     # Public API: Task Execution
     # -----------------------------------------------------------------------
     
+    async def execute_complex_task(self, goal: str) -> Dict[str, Any]:
+        """
+        Execute a complex, multi-step task using the Manager/Worker architecture.
+        
+        This is the v2.0 entry point for tasks requiring:
+        - Multi-file coordination
+        - Dependency management
+        - Parallel execution
+        - Spatial awareness of workspace
+        
+        Args:
+            goal: High-level goal description (e.g., "Create a REST API with tests")
+            
+        Returns:
+            Dictionary with execution status and step results
+        """
+        return await self.manager.run(goal)
+    
     async def execute_task(
         self,
         task_description: str,
@@ -171,7 +210,10 @@ class AgentBrain:
         """
         Execute a task with automatic optimization and fallback.
         
-        This is the main entry point for all agent work.
+        This is the legacy entry point for simple, atomic tasks.
+        Uses the optimized workflow/LLM routing system.
+        
+        For complex multi-step tasks, use execute_complex_task() instead.
         """
         task_id = self._generate_task_id(task_description, task_input)
         start_time = time.time()
