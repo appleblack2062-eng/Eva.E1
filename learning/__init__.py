@@ -7,6 +7,7 @@ This package provides self-improving agent capabilities:
 - Self-reflection and case-based reasoning
 - Drift detection and adaptation
 - Implicit feedback learning
+- Structural DFG pattern matching for isomorphic workflow recognition
 """
 
 from .pattern_engine import (
@@ -44,6 +45,16 @@ from .implicit_feedback import (
     FeedbackSignal,
 )
 
+from .dfg_pattern_matcher import (
+    DataFlowGraph,
+    DFGNode,
+    DFGEdge,
+    NodeOperation,
+    IsomorphicMatcher,
+    StructuralPatternEngine,
+    create_structural_pattern_engine,
+)
+
 __all__ = [
     # Pattern Engine
     "PatternEncoder",
@@ -73,4 +84,13 @@ __all__ = [
     # Implicit Feedback
     "ImplicitFeedbackParser",
     "FeedbackSignal",
+    
+    # Structural DFG Pattern Matching
+    "DataFlowGraph",
+    "DFGNode",
+    "DFGEdge",
+    "NodeOperation",
+    "IsomorphicMatcher",
+    "StructuralPatternEngine",
+    "create_structural_pattern_engine",
 ]
