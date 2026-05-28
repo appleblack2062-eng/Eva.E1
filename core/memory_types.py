@@ -92,3 +92,41 @@ class TaskResult:
     latency_ms: float = 0.0
     tokens_used: int = 0
     fallback_triggered: bool = False
+
+
+# Eva.E1 Meta-Learning Types
+
+@dataclass
+class ComponentSpec:
+    """Specification for a reusable atomic component."""
+    name: str
+    description: str
+    input_schema: Dict[str, Any] = field(default_factory=dict)
+    output_schema: Dict[str, Any] = field(default_factory=dict)
+    code: str = ""
+    dependencies: List[str] = field(default_factory=list)
+    success_rate: float = 0.9
+    avg_latency_ms: float = 50.0
+    avg_cost_usd: float = 0.001
+    tags: List[str] = field(default_factory=list)
+
+
+@dataclass
+class FeedbackSignal:
+    """Signal extracted from user feedback."""
+    task_context: Dict[str, Any] = field(default_factory=dict)
+    original: str = ""
+    edited: str = ""
+    diff: Dict[str, Any] = field(default_factory=dict)
+    change_type: str = "other"
+    preference: Dict[str, Optional[str]] = field(default_factory=dict)
+    confidence: float = 0.5
+
+
+@dataclass
+class WorkflowVariant:
+    """A variant of a workflow with performance metrics."""
+    workflow_id: str
+    metrics: Dict[str, float] = field(default_factory=dict)
+    utility: float = 0.0
+    constraints_satisfied: bool = True
