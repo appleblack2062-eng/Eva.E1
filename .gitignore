@@ -1,1 +1,56 @@
-Nothing should be ignored based on the provided file changes, as they consist only of Python source files (.py), __init__.py files, and a settings.py configuration file - all of which are legitimate source code files that should be tracked in version control. No build artifacts, dependencies, temporary files, or other ignorable content is present in the change list.
+```
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+.coverage
+htmlcov/
+.coverage.*
+.pytest_cache/
+.mypy_cache/
+.pyre/
+.pytype/
+
+# Virtual environments
+venv/
+ENV/
+.env
+.env.local
+.env.*
+.venv/
+env.bak/
+venv.bak/
+
+# Build and distribution artifacts
+build/
+dist/
+*.egg
+*.egg-info/
+.installed.cfg
+*.egg-info/
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*.tmp
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+*.log
+
+# Coverage reports
+coverage/
+```
