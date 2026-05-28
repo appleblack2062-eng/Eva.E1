@@ -62,6 +62,16 @@ class AgentConfig:
         "HTTP_GET": "http_get",
         "PARSE_JSON": "parse_json",
     })
+    
+    # Eva.E1 Meta-Learning Configuration
+    enable_pattern_generalization: bool = True
+    enable_causal_debugging: bool = True
+    enable_implicit_feedback: bool = True
+    optimization_objectives: List[str] = field(default_factory=lambda: ["latency", "cost", "accuracy"])
+    user_objective_weights: Optional[Dict[str, float]] = None
+    drift_detection_enabled: bool = True
+    drift_window_size: int = 100
+    component_library_enabled: bool = True
 
 
 @dataclass

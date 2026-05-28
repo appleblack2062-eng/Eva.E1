@@ -1,8 +1,13 @@
-"""Synthesis and optimization module."""
+"""Synthesis module for workflow and component generation."""
 
-from .workflow_generator import WorkflowGenerator
-from .validator import WorkflowValidator
-from .optimizer import WorkflowOptimizer
-from .tool_builder import ToolBuilder
+from .component_library import (
+    ComponentSpec,
+    WorkflowSpec,
+    ComponentLibrary,
+)
 
-__all__ = ["WorkflowGenerator", "WorkflowValidator", "WorkflowOptimizer", "ToolBuilder"]
+__all__ = [
+    "ComponentSpec",
+    "WorkflowSpec",
+    "ComponentLibrary",
+]
